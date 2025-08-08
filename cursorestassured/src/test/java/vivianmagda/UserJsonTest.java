@@ -1,12 +1,14 @@
 package vivianmagda;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 
 import java.util.Arrays;
 
@@ -115,6 +117,24 @@ public class UserJsonTest {
             .body("", hasSize(3))
             .body("filhos.name", hasItem(Arrays.asList("Zezinho", "Luizinho")))
             .body("salary", hasItem(2500))
+        ;
+    }
+
+     @Test
+    public void deveFazerVerificacoesAvancadas() {
+        
+        given()
+            //Pré condições
+        .when()
+            .get("https://restapi.wcaquino.me/users")
+        .then()
+            .statusCode(200)
+            .body("", hasSize(3))
+            .body("age.findAll{it <= 25}.size()", is(2))            
+            .body("findAll{it.age <= 25 && it.age > 20}.name", hasItem("Maria Joaquina"))            
+            .body("findAll{it.age <= 25}[0].name", is("Maria Joaquina"))
+            .body("salary.findAll{it != null}.sum()", allOf(greaterThan(3000d), lessThan(5000d)))
+
         ;
     }
 
