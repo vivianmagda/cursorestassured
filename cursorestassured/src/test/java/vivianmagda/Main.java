@@ -1,4 +1,4 @@
-package com.vivianmagda;
+package vivianmagda;
 
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
