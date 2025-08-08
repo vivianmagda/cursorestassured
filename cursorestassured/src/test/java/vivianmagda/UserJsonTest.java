@@ -1,10 +1,14 @@
 package vivianmagda;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -97,6 +101,21 @@ public class UserJsonTest {
             .body("error", is("Usuário inexistente"))
         ;
 
+    }
+
+    @Test
+    public void deveVerificarListaNaRaiz() {
+        
+        given()
+            //Pré condições
+        .when()
+            .get("https://restapi.wcaquino.me/users")
+        .then()
+            .statusCode(200)
+            .body("", hasSize(3))
+            .body("filhos.name", hasItem(Arrays.asList("Zezinho", "Luizinho")))
+            .body("salary", hasItem(2500))
+        ;
     }
 
 }
