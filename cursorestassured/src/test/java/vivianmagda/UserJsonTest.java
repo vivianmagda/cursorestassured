@@ -2,7 +2,9 @@ package vivianmagda;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
@@ -10,6 +12,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -134,8 +137,28 @@ public class UserJsonTest {
             .body("findAll{it.age <= 25 && it.age > 20}.name", hasItem("Maria Joaquina"))            
             .body("findAll{it.age <= 25}[0].name", is("Maria Joaquina"))
             .body("salary.findAll{it != null}.sum()", allOf(greaterThan(3000d), lessThan(5000d)))
+            .body("name.findAll{it.startsWith('Maria')}.collect{it.toUpperCase()}.toArray()", both(arrayContaining("MARIA JOAQUINA")).and(arrayWithSize(1)))
 
         ;
+    }
+
+    @Test
+    public void devoUnirJsonPathComJAVA(){
+        ArrayList<String> names =
+            given()
+                //Pré condições
+            .when()
+                .get("https://restapi.wcaquino.me/users")
+            .then()
+            // .body("name.findAll{it.startsWith('Maria')}.collect{it.toUpperCase()}.toArray()", both(arrayContaining("MARIA JOAQUINA")).and(arrayWithSize(1)))
+            .extract().path("name.findAll{it.startsWith('Maria')}")
+
+            ;
+        Assert.assertEquals(1, names.size());
+        Assert.assertTrue(names.get(0).equalsIgnoreCase("maria joaquina"));
+        Assert.assertEquals(names.get(0).toUpperCase(), "maria joaquina".toUpperCase());
+
+
     }
 
 }
