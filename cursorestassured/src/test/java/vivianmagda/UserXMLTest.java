@@ -1,8 +1,8 @@
 package vivianmagda;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
@@ -29,6 +29,21 @@ public class UserXMLTest {
 
             .appendRootPath("filhos")
                 .body("name",   hasItem("Luizinho"))
+        ;
+    }
+
+     @Test
+    public void devoFazerPesquisasAvancadascomXML(){
+        given()
+        .when()
+            .get("https://restapi.wcaquino.me/usersXML/")
+        .then()
+            .statusCode(200)
+            .rootPath("users.user")
+                .body("size()", is(3))
+                .body("findAll{it.age.toInteger() <= 25}.size()", is(2))
+                .body("salary.find{it != null}.toDouble()", is(1234.5678d))
+                .body("name.findAll{it.toString().startsWith('Maria')}.collect{it.toString().toUpperCase()}", is("MARIA JOAQUINA"))
         ;
     }
 
