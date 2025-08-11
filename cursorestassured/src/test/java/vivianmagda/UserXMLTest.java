@@ -1,7 +1,10 @@
 package vivianmagda;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasXPath;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -66,5 +69,27 @@ public class UserXMLTest {
         assertTrue("Ana Julia".equalsIgnoreCase(nomes.get(1).toString()));
 
     }
+
+
+    @Test
+    public void devoFazerPesquisasAvancadascomXPath(){
+        given()
+        .when()
+            .get("https://restapi.wcaquino.me/usersXML/")
+        .then()
+            .statusCode(200)
+            .body(hasXPath("count(/users/user)", is("3")))
+            .body(hasXPath("/users/user[@id = '1']"))
+            .body(hasXPath("//user[@id = '2']"))            
+            .body(hasXPath("//name[text() = 'Luizinho']/../../name", is("Ana Julia")))
+            .body(hasXPath("//name[text() = 'Ana Julia']/following-sibling::filhos", allOf(containsStringIgnoringCase("Zezinho"), containsStringIgnoringCase("Luizinho"))))            
+            .body(hasXPath("count(/users/user/name[contains(., 'n')])", is("2")))   
+            .body(hasXPath("//user[age < 24]/name", is("Ana Julia")))     
+            .body(hasXPath("//user[age > 20 and age < 30]/name", is("Maria Joaquina")))    
+            .body(hasXPath("//user[age > 20][age < 30]/name", is("Maria Joaquina")))                  
+        ;
+
+    }
+    
 
 }
