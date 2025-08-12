@@ -1,14 +1,11 @@
 package vivianmagda;
 
-import static io.restassured.RestAssured.basePath;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasXPath;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
