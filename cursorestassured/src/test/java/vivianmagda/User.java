@@ -1,5 +1,11 @@
 package vivianmagda;
 
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="user")   
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 
     private Long id;
@@ -7,6 +13,8 @@ public class User {
     private Integer age;
     private Double salary;
 
+    public User() {
+    }
     public User(String name, Integer age) {
         this.name = name;
         this.age = age;
@@ -35,8 +43,6 @@ public class User {
     @Override
     public String toString() {
         return "User [id=" + id + ", name=" + name + ", age=" + age + ", salary=" + salary + "]";
-    }
-
-    
+    }   
 
 }

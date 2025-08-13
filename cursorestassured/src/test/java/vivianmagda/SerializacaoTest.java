@@ -9,6 +9,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorOrder;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,7 +43,7 @@ public class SerializacaoTest {
         ;
     }
 
-     @Test
+    @Test
     public void deveSalvarUsuarioUsandoObjeto(){
         User user = new User("Adicionado com objeto", 35);
 
@@ -80,6 +85,27 @@ public class SerializacaoTest {
         assertEquals("Adicionado com deserializacao", usuarioInserido.getName());
         assertThat(usuarioInserido.getAge(), is(35));
 
+    }
+
+
+    @Test
+    public void deveSalvarUsuarioViaXMLUsandoObjeto(){
+        User user = new User("Adicionado com objeto", 35);
+
+        given()
+            .log().all()
+            .contentType(ContentType.XML)
+            .body(user)
+            .pathParam("entidade", "usersXML")
+        .when()
+            .post("https://restapi.wcaquino.me/{entidade}")
+        .then()
+            .log().all()
+            .statusCode(201)
+            .body("user.@id", is(notNullValue()))
+            .body("user.name", is("Adicionado com objeto"))
+            .body("user.age", is("35" ))
+        ;
     }
 
 }
