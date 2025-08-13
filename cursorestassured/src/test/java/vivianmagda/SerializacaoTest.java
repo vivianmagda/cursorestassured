@@ -108,4 +108,28 @@ public class SerializacaoTest {
         ;
     }
 
+    @Test
+    public void deveDeserializarXMLAoSalvarUsuario(){
+        User user = new User("Adicionado com deserializacao", 35);
+
+        User usuarioInserido = given()
+            .log().all()
+            .contentType(ContentType.XML)
+            .body(user)
+            .pathParam("entidade", "usersXML")
+        .when()
+            .post("https://restapi.wcaquino.me/{entidade}")
+        .then()
+            .log().all()
+            .statusCode(201)
+            .extract().body().as(User.class)
+        ;
+
+        
+        System.out.println(usuarioInserido);
+        assertThat(usuarioInserido.getId(),notNullValue());
+        assertEquals("Adicionado com deserializacao", usuarioInserido.getName());
+        assertThat(usuarioInserido.getAge(), is(35));
+    }
+
 }
