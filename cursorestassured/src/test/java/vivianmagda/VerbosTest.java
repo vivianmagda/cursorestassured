@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 
 public class VerbosTest {
 
@@ -32,8 +33,8 @@ public class VerbosTest {
 
     @Test
     public void naoDeveSalvarUsuarioSemNome(){
-        RestAssured.config = RestAssured.config()
-            .encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8"));
+        // RestAssured.config = RestAssured.config()
+        //     .encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8"));
         given()
             .log().all()
             .contentType("application/json")
@@ -45,6 +46,26 @@ public class VerbosTest {
             .statusCode(400)
             .body("id", is(nullValue()))
             .body("error", is("Name é um atributo obrigatório"))
+        ;
+
+    }
+
+     @Test
+    public void deveAlterarUsuario(){
+
+        given()
+            .log().all()
+            .contentType(ContentType.JSON)
+            .body("{\"name\" : \"Usuário Alterado\", \"age\" : 80}")
+        .when()
+            .put("https://restapi.wcaquino.me/users/1")
+        .then()
+             .log().all()
+            .statusCode(200)
+            .body("id", is(1))
+            .body("name", is("Usuário Alterado"))
+            .body("age", is(80))
+            .body("salary", is(1234.5678f))
         ;
 
     }
