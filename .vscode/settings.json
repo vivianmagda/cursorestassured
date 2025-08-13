@@ -1,4 +1,16 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "launch": {
+        "configurations": [
+            {
+                "type": "java",
+                "name": "Debug (Launch)",
+                "request": "launch",
+                "mainClass": "com.example.Main",
+                "vmArgs": "-Dfile.encoding=UTF-8"
+            }
+        ],
+        "compounds": []
+    }
 }
