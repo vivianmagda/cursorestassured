@@ -35,4 +35,24 @@ public class SerializacaoTest {
         ;
     }
 
+     @Test
+    public void deveSalvarUsuarioUsandoObjeto(){
+        User user = new User("Adicionado com objeto", 35);
+
+        given()
+            .log().all()
+            .contentType(ContentType.JSON)
+            .body(user)
+            .pathParam("entidade", "users")
+        .when()
+            .post("https://restapi.wcaquino.me/{entidade}")
+        .then()
+            .log().all()
+            .statusCode(201)
+            .body("id", is(notNullValue()))
+            .body("name", is("Adicionado com objeto"))
+            .body("age", is(35 ))
+        ;
+    }
+
 }
