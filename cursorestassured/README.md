@@ -45,9 +45,3 @@ Vivian Magda
 
 ## License
 This project is licensed under the MIT License.
-
-
-*Aquietem-se e saibam que eu sou Deus;
-sou exaltado entre as nações,
-sou exaltado na terra* 
-Sl 46.10
