@@ -50,9 +50,8 @@ public class VerbosTest {
 
     }
 
-     @Test
+    @Test
     public void deveAlterarUsuario(){
-
         given()
             .log().all()
             .contentType(ContentType.JSON)
@@ -69,6 +68,29 @@ public class VerbosTest {
         ;
 
     }
+
+    @Test
+    public void devoCustomizarURL(){
+        given()
+            .log().all()
+            .contentType(ContentType.JSON)
+            .body("{\"name\" : \"Usuário Alterado 2\", \"age\" : 80}")
+            .pathParam("entidade", "users")
+            .pathParam("userId", 2)
+        .when()
+            .put("https://restapi.wcaquino.me/{entidade}/{userId}")
+        .then()
+             .log().all()
+            .statusCode(200)
+            .body("id", is(2))
+            .body("name", is("Usuário Alterado 2"))
+            .body("age", is(80))
+            .body("salary", is(2500))
+        ;
+
+    }
+
+
 
 }
 
