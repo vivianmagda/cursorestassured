@@ -21,4 +21,32 @@ public class EnvioDadosTest {
         ;
     }
 
+    @Test
+    public void deveEnviarValorViaQueryViaParam(){
+        given()
+            .log().all()
+            .queryParam("format", "xml")
+        .when()
+            .get("https://restapi.wcaquino.me/v2/users")
+        .then()
+            .log().all()
+            .statusCode(200)
+            .contentType(ContentType.XML)
+        ;
+    }
+
+    @Test
+    public void deveEnviarValorViaQueryViaHeader(){
+        given()
+            .log().all()
+            .accept(ContentType.XML)
+        .when()
+            .get("https://restapi.wcaquino.me/v2/users")
+        .then()
+            .log().all()
+            .statusCode(200)
+            .contentType(ContentType.XML)
+        ;
+    }
+
 }
